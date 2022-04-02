@@ -20,7 +20,7 @@ public class CamShake : MonoBehaviour {
     }
 
     public void BigShake() {
-        if (doneShaking) StartCoroutine(shake(30, 0.75f, 0.015f, true, Vector2.zero));
+        if (doneShaking) StartCoroutine(shake(50, 0.85f, 0.015f, true, Vector2.zero));
     }
 
     private IEnumerator shake(int amount, float range, float duration, bool decay, Vector2 direction) {

@@ -28,6 +28,8 @@ public class RocketCollisionManager : MonoBehaviour {
     private void Update() {
         // Check if any asteroids overlap the rocket.
         if (!isInvincible && coll.OverlapCollider(filter, others) > 0) {
+            // TODO: This GetComponent call could be cached, there's only a limited number of asteroids in the pool.
+            others[0].GetComponent<AsteroidBehavior>().Crash();
             Hit();
         }
     }
@@ -58,7 +60,6 @@ public class RocketCollisionManager : MonoBehaviour {
         Color clearColor = new Color(flashColor.r, flashColor.g, flashColor.b, 0);
         float timeLeft = flashFadeTime;
         while (timeLeft > 0) {
-            Debug.Log(Color.Lerp(clearColor, flashColor, timeLeft / flashFadeTime));
             rend.material.SetColor("_Color", Color.Lerp(clearColor, flashColor, timeLeft / flashFadeTime));
             timeLeft -= Time.deltaTime;
             yield return null;
