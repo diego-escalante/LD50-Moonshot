@@ -14,9 +14,14 @@ public class RocketController : MonoBehaviour {
     private float currentAcc;
     private float newAcc;
     private float sign;
+    private Camera cam;
 
     private void Awake() {
         acc = speed / timeToTopSpeed;
+    }
+
+    private void Start() {
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
     }
 
     private void Update() {
@@ -38,6 +43,16 @@ public class RocketController : MonoBehaviour {
         // Velocity Verlet: Update position based on x += vt + 0.5*at^2
         Vector3 pos = transform.position;
         pos.x += vel * Time.deltaTime + 0.5f * currentAcc * Time.deltaTime * Time.deltaTime;
+        
+        // Don't let the rocket go out of camera view.
+        // (TODO: This is brittle because it depends on the camera being centered at x = 0.)
+        // (TODO: This doesn't need to be calculated every frame.)
+        float maxHorizontalDistance = cam.ViewportToWorldPoint(new Vector3(1, 1, 0)).x - 0.5f;
+        if (Mathf.Abs(pos.x) > maxHorizontalDistance) {
+            vel = 0;
+            pos.x = Mathf.Clamp(pos.x, -maxHorizontalDistance, maxHorizontalDistance);
+        }
+        
         transform.position = pos;
         
         // Take in player's intent.
