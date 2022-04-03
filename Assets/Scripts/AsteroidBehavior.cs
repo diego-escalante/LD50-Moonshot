@@ -14,9 +14,11 @@ public class AsteroidBehavior : MonoBehaviour {
     private float rotationDegreesPerSecond;
     private static Camera cam;
     private ParticleSystem particles;
+    private Collider2D coll;
 
     private void Awake() {
         rend = GetComponent<SpriteRenderer>();
+        coll = GetComponent<Collider2D>();
         particles = GetComponent<ParticleSystem>();
         if (cam == null) {
             cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
@@ -24,6 +26,7 @@ public class AsteroidBehavior : MonoBehaviour {
     }
 
     public void Initialize(Vector2 position, Vector2 velocity, float initialRotationDegrees, float rotationDegreesPerSecond, Color color) {
+        coll.enabled = true;
         transform.position = position;
         vel = velocity;
         rend.enabled = true;
@@ -49,6 +52,7 @@ public class AsteroidBehavior : MonoBehaviour {
     }
 
     public void Crash() {
+        coll.enabled = false;
         rotationDegreesPerSecond = 0;
         rend.enabled = false;
         float h, s, v;

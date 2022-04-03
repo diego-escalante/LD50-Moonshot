@@ -21,7 +21,7 @@ public class RocketStartSequence : MonoBehaviour {
     }
 
     private IEnumerator StartSequence() {
-        yield return new WaitForSeconds(2f);
+        // yield return new WaitForSeconds(2f);
         
         // Camera shake
         EventManager.TriggerEvent(EventManager.Event.Launching);

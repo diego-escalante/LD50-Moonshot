@@ -10,22 +10,28 @@ public class CamShake : MonoBehaviour {
     private void OnEnable() {
         EventManager.StartListening(EventManager.Event.RocketHit, BigShake);
         EventManager.StartListening(EventManager.Event.Launching, TinyShake);
+        EventManager.StartListening(EventManager.Event.RocketExplode, HugeShake);
     }
 
     private void OnDisable() {
         EventManager.StopListening(EventManager.Event.RocketHit, BigShake);
         EventManager.StopListening(EventManager.Event.Launching, TinyShake);
+        EventManager.StopListening(EventManager.Event.RocketExplode, HugeShake);
     }
 
     public void TinyShake() {
-        if (doneShaking) StartCoroutine(shake(500, 0.15f, 0.015f, true, Vector2.zero));
+        if (doneShaking) StartCoroutine(shake(500, 0.15f, 0.015f, true, Vector2.zero, false));
     }
 
     public void BigShake() {
-        if (doneShaking) StartCoroutine(shake(30, 0.85f, 0.015f, true, Vector2.zero));
+        if (doneShaking) StartCoroutine(shake(30, 0.85f, 0.015f, true, Vector2.zero, false));
+    }
+    
+    public void HugeShake() {
+        if (doneShaking) StartCoroutine(shake(100, 0.75f, 0.015f, false, Vector2.zero, true));
     }
 
-    private IEnumerator shake(int amount, float range, float duration, bool decay, Vector2 direction) {
+    private IEnumerator shake(int amount, float range, float duration, bool decay, Vector2 direction, bool realTime) {
         doneShaking = false;
         direction = direction.normalized;
         Vector3 origin = transform.localPosition;
@@ -43,24 +49,24 @@ public class CamShake : MonoBehaviour {
                 sign *= -1;
             }
 
-            StartCoroutine(smoothMove(newPos, duration));
+            StartCoroutine(smoothMove(newPos, duration, realTime));
             while (!doneMoving) { yield return null; }
         }
 
-        StartCoroutine(smoothMove(origin, duration));
+        StartCoroutine(smoothMove(origin, duration, realTime));
         while (!doneMoving) { 
             yield return null;
         }
         doneShaking = true;
     }
 
-    private IEnumerator smoothMove(Vector3 targetPosition, float duration) {
+    private IEnumerator smoothMove(Vector3 targetPosition, float duration, bool realTime) {
         doneMoving = false;
         Vector3 originalPosition = transform.localPosition;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration) {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += realTime ? Time.unscaledDeltaTime : Time.deltaTime;
             transform.localPosition = new Vector3(Mathf.SmoothStep(originalPosition.x, targetPosition.x, elapsedTime / duration),
                                                   Mathf.SmoothStep(originalPosition.y, targetPosition.y, elapsedTime / duration),
                                                   originalPosition.z);
