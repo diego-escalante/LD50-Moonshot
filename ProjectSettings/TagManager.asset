@@ -8,6 +8,7 @@ TagManager:
   - Planet
   - Stars
   - Volume
+  - Moon
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - Asteroids
   - Water
   - UI
-  - 
+  - Moon
   - 
   - 
   - 

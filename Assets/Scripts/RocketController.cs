@@ -19,6 +19,7 @@ public class RocketController : MonoBehaviour {
     private Vector2 newAcc;
     private float signX, signY;
     private Camera cam;
+    private bool forceUp = false;
 
     private void Awake() {
         acc = speed / timeToTopSpeed;
@@ -66,7 +67,7 @@ public class RocketController : MonoBehaviour {
         
         // Take in player's intent.
         targetVel.x = Input.GetAxisRaw(hAxis) * speed;
-        targetVel.y = Input.GetAxisRaw(vAxis) * speed;
+        targetVel.y = (forceUp ? 5 : Input.GetAxisRaw(vAxis)) * speed;
         
         // Handle case where velocity changes are instant.
         if (Single.IsPositiveInfinity(acc)) {
@@ -78,7 +79,7 @@ public class RocketController : MonoBehaviour {
         signX = Mathf.Sign(targetVel.x - vel.x);
         newAcc.x = Mathf.Approximately(targetVel.x, vel.x) ? 0 : signX * acc;
         signY = Mathf.Sign(targetVel.y - vel.y);
-        newAcc.y = Mathf.Approximately(targetVel.y, vel.y) ? 0 : signY * acc;
+        newAcc.y = Mathf.Approximately(targetVel.y, vel.y) ? 0 : signY * (forceUp ? acc * 3 : acc);
         
         // Velocity Verlet: Update velocity based on v += 0.5*(a_old * a_new)*t
         vel += 0.5f * (currentAcc + newAcc) * Time.deltaTime;
@@ -88,5 +89,9 @@ public class RocketController : MonoBehaviour {
         vel.y = signY < 0 ? Mathf.Max(vel.y, targetVel.y) : Mathf.Min(targetVel.y, vel.y);
 
         currentAcc = newAcc;
+    }
+
+    public void OverrideUpInput() {
+        forceUp = true;
     }
 }

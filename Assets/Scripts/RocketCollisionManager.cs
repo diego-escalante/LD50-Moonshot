@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(CapsuleCollider2D), typeof (SpriteRenderer))]
 public class RocketCollisionManager : MonoBehaviour {
 
-    [SerializeField] private LayerMask asteroidMask;
+    [SerializeField] private LayerMask asteroidMask, moonMask;
     [SerializeField] private float invincibilityTime = 3f;
     [SerializeField] private float flashFadeTime = 0.25f;
     [SerializeField] private float flashInterval = 0.5f;
@@ -17,7 +17,7 @@ public class RocketCollisionManager : MonoBehaviour {
     private Collider2D coll;
     private SpriteRenderer rend;
     private Collider2D[] others = new Collider2D[5];
-    private ContactFilter2D filter;
+    private ContactFilter2D asteroidFilter, moonFilter;
     private bool isInvincible;
     private Coroutine flashCoroutine;
     private Volume vol;
@@ -25,7 +25,8 @@ public class RocketCollisionManager : MonoBehaviour {
     private void Awake() {
         coll = GetComponent<Collider2D>();
         rend = GetComponent<SpriteRenderer>();
-        filter.SetLayerMask(asteroidMask);
+        asteroidFilter.SetLayerMask(asteroidMask);
+        moonFilter.SetLayerMask(moonMask);
     }
 
     private void Start() {
@@ -33,11 +34,25 @@ public class RocketCollisionManager : MonoBehaviour {
     }
 
     private void Update() {
+        // Check if rocket overlaps moon.
+        if (coll.OverlapCollider(moonFilter, others) > 0) {
+            StartCoroutine(Explode(true));
+        }
+        
         // Check if any asteroids overlap the rocket.
-        if (!isInvincible && coll.OverlapCollider(filter, others) > 0) {
+        if (!isInvincible && coll.OverlapCollider(asteroidFilter, others) > 0) {
             // TODO: This GetComponent call could be cached, there's only a limited number of asteroids in the pool.
-            others[0].GetComponent<AsteroidBehavior>().Crash();
-            Hit();
+            for (int i = 0; i < others.Length; i++) {
+                if (others[i] == null) {
+                    continue;
+                }
+
+                if (Vector2.Distance(others[i].transform.position, transform.position) < 1.5f) {
+                    Hit();
+                    others[i].GetComponent<AsteroidBehavior>().Crash();
+                    return;
+                }
+            }
         }
     }
 
@@ -47,11 +62,12 @@ public class RocketCollisionManager : MonoBehaviour {
             EventManager.TriggerEvent(EventManager.Event.RocketHit);
             StartCoroutine(Invincible());
         } else {
-            StartCoroutine(Explode());
+            StartCoroutine(Explode(false));
         }
     }
 
-    private IEnumerator Explode() {
+    private IEnumerator Explode(bool isSuccess) {
+        enabled = false;
         GetComponent<RocketController>().enabled = false;
         isInvincible = true;
         Time.timeScale = 0;
@@ -72,8 +88,8 @@ public class RocketCollisionManager : MonoBehaviour {
             explosionRend.color = Color.Lerp(Color.black, Color.white, timeLeft / 2f);
             yield return null;
         }
-        
-        enabled = false;
+
+        EventManager.TriggerEvent(isSuccess ? EventManager.Event.Succeeded : EventManager.Event.Failed);
     }
 
     private IEnumerator Invincible() {

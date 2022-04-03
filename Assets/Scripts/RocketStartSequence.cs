@@ -45,6 +45,7 @@ public class RocketStartSequence : MonoBehaviour {
 
         yield return new WaitForSeconds(3f);
         asteroidSpawner.enabled = true;
+        GetComponent<LevelManager>().enabled = true;
     }
 
 }

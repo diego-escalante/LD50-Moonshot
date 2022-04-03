@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AsteroidSpawner : MonoBehaviour {
 
@@ -15,6 +17,7 @@ public class AsteroidSpawner : MonoBehaviour {
     private List<AsteroidBehavior> asteroidPool = new List<AsteroidBehavior>();
     private int currentAsteroid = 0;
     private Camera cam;
+    private Coroutine co;
     
     private void Awake() {
         // Create all asteroids up front.
@@ -25,9 +28,16 @@ public class AsteroidSpawner : MonoBehaviour {
         }
     }
 
+    private void OnEnable() {
+        co = StartCoroutine(Spawner());
+    }
+    
+    private void OnDisable() {
+        StopCoroutine(co);
+    }
+
     private void Start() {
         cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-        StartCoroutine(Spawner());
     }
 
     private IEnumerator Spawner() {
@@ -76,5 +86,14 @@ public class AsteroidSpawner : MonoBehaviour {
             currentAsteroid++;
         }
         return null;
+    }
+
+    public bool AreAllAsteroidsInactive() {
+        foreach (AsteroidBehavior asteroid in asteroidPool) {
+            if (asteroid.isActiveAndEnabled) {
+                return false;
+            }
+        }
+        return true;
     }
 }
