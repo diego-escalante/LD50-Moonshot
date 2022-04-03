@@ -16,13 +16,11 @@ public class RocketStartSequence : MonoBehaviour {
         rocketController = GameObject.FindWithTag("Rocket").GetComponent<RocketController>();
     }
 
-    private void Start() {
+    private void OnEnable() {
         StartCoroutine(StartSequence());
     }
 
     private IEnumerator StartSequence() {
-        // yield return new WaitForSeconds(2f);
-        
         // Camera shake
         EventManager.TriggerEvent(EventManager.Event.Launching);
         yield return new WaitForSeconds(3f);
