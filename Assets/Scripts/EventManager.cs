@@ -58,6 +58,7 @@ public class EventManager : MonoBehaviour {
     }
 
     public enum Event {
-        RocketHit
+        RocketHit,
+        Launching
     }
 }

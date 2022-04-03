@@ -9,14 +9,16 @@ public class CamShake : MonoBehaviour {
 
     private void OnEnable() {
         EventManager.StartListening(EventManager.Event.RocketHit, BigShake);
+        EventManager.StartListening(EventManager.Event.Launching, TinyShake);
     }
 
     private void OnDisable() {
         EventManager.StopListening(EventManager.Event.RocketHit, BigShake);
+        EventManager.StopListening(EventManager.Event.Launching, TinyShake);
     }
 
     public void TinyShake() {
-        if (doneShaking) StartCoroutine(shake(10, 0.3f, 0.015f, true, Vector2.zero));
+        if (doneShaking) StartCoroutine(shake(500, 0.15f, 0.015f, true, Vector2.zero));
     }
 
     public void BigShake() {
