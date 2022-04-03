@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
-    
+
+    public TMP_Text uiText;
     public float levelDuration = 30f;
     private AsteroidSpawner spawner;
     private Transform moon;
@@ -13,12 +15,27 @@ public class LevelManager : MonoBehaviour {
         spawner = GetComponent<AsteroidSpawner>();
         moon = GameObject.FindWithTag("Moon").transform;
     }
+
+    private void OnEnable() {
+        EventManager.StartListening(EventManager.Event.RocketExplode, Stop);
+    }
+    
+    private void OnDisable() {
+        EventManager.StopListening(EventManager.Event.RocketExplode, Stop);
+    }
+
+    private void Stop() {
+        uiText.text = "Impact ETA: :(";
+        enabled = false;
+    }
     
     private void Update() {
         levelDuration -= Time.deltaTime;
+        uiText.text = "Impact ETA: " + (int)levelDuration;
 
         if (levelDuration <= 0) {
             levelDuration = 0;
+            uiText.text = "Impact ETA: Imminent!";
             spawner.enabled = false;
             enabled = false;
             StartCoroutine(FinalSequence());

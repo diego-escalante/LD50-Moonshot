@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 [RequireComponent(typeof(CapsuleCollider2D), typeof (SpriteRenderer))]
 public class RocketCollisionManager : MonoBehaviour {
 
+    public TMP_Text uiText;
     [SerializeField] private LayerMask asteroidMask, moonMask;
     [SerializeField] private float invincibilityTime = 3f;
     [SerializeField] private float flashFadeTime = 0.25f;
@@ -27,6 +29,7 @@ public class RocketCollisionManager : MonoBehaviour {
         rend = GetComponent<SpriteRenderer>();
         asteroidFilter.SetLayerMask(asteroidMask);
         moonFilter.SetLayerMask(moonMask);
+        uiText.text = "Hull Integrity: " + hits;
     }
 
     private void Start() {
@@ -58,6 +61,7 @@ public class RocketCollisionManager : MonoBehaviour {
 
     private void Hit() {
         hits--;
+        uiText.text = "Hull Integrity: " + hits;
         if (hits > 0) {
             EventManager.TriggerEvent(EventManager.Event.RocketHit);
             StartCoroutine(Invincible());
