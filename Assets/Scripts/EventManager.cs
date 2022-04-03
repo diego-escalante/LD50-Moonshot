@@ -59,6 +59,7 @@ public class EventManager : MonoBehaviour {
 
     public enum Event {
         RocketHit,
+        PreExplosion,
         Launching,
         RocketExplode,
         Failed,

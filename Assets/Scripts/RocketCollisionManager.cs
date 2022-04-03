@@ -72,6 +72,7 @@ public class RocketCollisionManager : MonoBehaviour {
 
     private IEnumerator Explode(bool isSuccess) {
         enabled = false;
+        EventManager.TriggerEvent(EventManager.Event.PreExplosion);
         GetComponent<RocketController>().enabled = false;
         isInvincible = true;
         Time.timeScale = 0;

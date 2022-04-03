@@ -99,13 +99,13 @@ public class DialogueManager : MonoBehaviour {
         // Set up subdialogue sound
         if (audioSource != null && speaker.scrollSound != null) {
             audioSource.clip = speaker.scrollSound;
-            audioSource.pitch = speaker.pitch + Random.Range(-speaker.pitchDelta/2, speaker.pitchDelta/2);
         }
 
         // Animate text scroll
         bool inBrackets = false;
         string text = subDialogue.Text;
         for(int i = 0; i < text.Length; i++) {
+            audioSource.pitch = speaker.pitch + Random.Range(-speaker.pitchDelta/2, speaker.pitchDelta/2);
             // Special case: Angular brackets. If an open bracket exists, skip until closing bracket is found.
             // TODO: This only works for rich text with something like <sprite=0>, not something like <i>italics</i>.
             // This is because the <i> will be processed individually and will show in the UI until </i> is also processed
