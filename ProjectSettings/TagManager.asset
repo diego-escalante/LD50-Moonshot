@@ -9,6 +9,7 @@ TagManager:
   - Stars
   - Volume
   - Moon
+  - Fader
   layers:
   - Default
   - TransparentFX

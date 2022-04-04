@@ -13,7 +13,7 @@ public class Fader : MonoBehaviour {
     }
     
     private IEnumerator Fade() {
-        float totalTime = 5f;
+        float totalTime = 2.5f;
         for (float timeElapsed = 0; timeElapsed <= totalTime; timeElapsed += Time.deltaTime) {
             img.color = Color.Lerp(Color.black, Color.clear, timeElapsed / totalTime);
             yield return null;

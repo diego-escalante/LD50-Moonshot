@@ -13,6 +13,7 @@ public class AsteroidSpawner : MonoBehaviour {
     [SerializeField] private float maxHorizontalSpeed = 2f;
     [SerializeField] private float minVerticalSpeed = 1f;
     [SerializeField] private float maxVerticalSpeed = 3f;
+    [SerializeField] private float spawnInterval = 1f;
     
     private List<AsteroidBehavior> asteroidPool = new List<AsteroidBehavior>();
     private int currentAsteroid = 0;
@@ -42,7 +43,7 @@ public class AsteroidSpawner : MonoBehaviour {
 
     private IEnumerator Spawner() {
         while (true) {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(spawnInterval);
             SpawnAsteroid();
         }
     }
