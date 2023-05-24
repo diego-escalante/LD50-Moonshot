@@ -1,9 +1,11 @@
 # Moonshot
 
-<picture>
-  <source srcset="../assets/gameplay.gif?raw=true">
-  <img alt="Shows a gif with a snippet of gameplay." src="../assets/gameplay.gif?raw=true">
-</picture>
+<p align="center">
+  <picture>
+    <source srcset="../assets/gameplay.gif?raw=true">
+    <img alt="Shows a gif with a snippet of gameplay." src="../assets/gameplay.gif?raw=true">
+  </picture>
+</p>
 
 ## [Play the game here!](https://diego-escalante.itch.io/moonshot)
 This game was made in 48 hours for the Ludum Dare 50 jam. The theme of the jam was "Delay the Inevitable." It was made with Unity. 
