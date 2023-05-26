@@ -8,7 +8,7 @@
 </p>
 
 ## [Play the game here!](https://diego-escalante.itch.io/moonshot)
-This game was made in 48 hours for the Ludum Dare 50 jam. The theme of the jam was "Delay the Inevitable." It was made with Unity. 
+This game was made in 48 hours for the Ludum Dare 50 jam in April 2022. The theme of the jam was "Delay the Inevitable." It was made with Unity. 
 
 ## Links
 * [Moonshot on itch.io](https://diego-escalante.itch.io/moonshot): Play the game directly on your browser here.
