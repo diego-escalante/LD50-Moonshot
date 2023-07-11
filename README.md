@@ -27,7 +27,7 @@ This game was made in 48 hours for the Ludum Dare 50 jam in April 2022. The them
 1. Make sure you have Unity version 2020.3.32f1 installed, as that is the version of the engine that was used for this game. You can get it from the [Unity Hub](https://unity.com/download).
 2. Clone this repo in your desired directory: `git clone https://github.com/diego-escalante/LD50-Moonshot.git`
 3. Start up the Unity Hub. Open the project and ensure that the editor version 2020.3.32f1 is selected for the project.
-4. One the engine opens up the project, you can run the game by opening up the main scene and pressing the Play button in the top center.
+4. Once the engine opens up the project, you can run the game by opening up the main scene and pressing the Play button in the top center.
 
 ## Rankings
 The game received the following rankings in the game jam:
